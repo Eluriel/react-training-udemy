@@ -4,13 +4,14 @@ export default function Player({ name, symbol }) {
   const [isEditing, setIsEditing] = useState(false);
 
   function handleEditClick() {
-    setIsEditing(true);
+    // This is better to use a function to update a state based on the previous state value
+    setIsEditing((editing) => !editing);
   }
 
   let playerName = <span className="player-name">{name}</span>;
 
   if (isEditing) {
-    playerName = <input type="text" required />;
+    playerName = <input type="text" required value={name} />;
   }
 
   return (
