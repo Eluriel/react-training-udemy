@@ -1,8 +1,53 @@
+import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+
+import NewProject from './components/NewProject';
+import NoProjectSelected from './components/NoProjectSelected';
+import ProjectsSidebar from './components/ProjectsSidebar';
+
 function App() {
+  const [projectsState, setProjectsState] = useState({
+    selectedProjectId: undefined,
+    projects: [],
+  });
+
+  function handleStartAddProject() {
+    setProjectsState((prevState) => {
+      return {
+        ...prevState,
+        selectedProjectId: null,
+      };
+    });
+  }
+
+  function handleAddProject(projectData) {
+    setProjectsState((prevState) => {
+      const newProject = {
+        ...projectData,
+        id: uuidv4(),
+      };
+      return {
+        ...prevState,
+        projects: [...prevState.projects, newProject],
+      };
+    });
+  }
+
+  let content;
+
+  console.log(projectsState);
+
+  if (projectsState.selectedProjectId === null) {
+    content = <NewProject onAdd={handleAddProject} />;
+  } else if (projectsState.selectedProjectId === undefined) {
+    content = <NoProjectSelected onStartAddProject={handleStartAddProject} />;
+  }
+
   return (
-    <>
-      <h1 className="my-8 text-center text-5xl font-bold">Hello World</h1>
-    </>
+    <main className="h-screen my-8 flex gap-8">
+      <ProjectsSidebar onStartAddProject={handleStartAddProject} />
+      {content}
+    </main>
   );
 }
 
