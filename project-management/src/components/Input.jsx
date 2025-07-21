@@ -14,7 +14,6 @@ const Input = forwardRef(function Input({ label, textarea, ...props }, ref) {
       ) : (
         <input ref={ref} className={classes} {...props} />
       )}
-      <input />
     </p>
   );
 });
