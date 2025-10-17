@@ -1,9 +1,17 @@
+import { fetchAvailableMeals } from '../http';
+import { useFetch } from '../hooks/useFetch';
 import MealItem from './MealItem';
 
 export default function Meals({ meals }) {
+  const {
+    isFetching,
+    error,
+    fetchedData: availableMeals,
+  } = useFetch(fetchAvailableMeals, []);
+
   return (
     <ul id="meals">
-      {meals.map((item) => (
+      {availableMeals.map((item) => (
         <MealItem
           name={item.name}
           key={item.id}
