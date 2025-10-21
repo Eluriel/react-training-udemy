@@ -1,43 +1,45 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// Products will have this form { title: 'Test Item', quantity: 3, total: 18, price: 6 }
+// Items will have this form { title: 'Test Item', quantity: 3, total: 18, price: 6 }
 
 const cartSlice = createSlice({
   name: 'cart',
-  initialState: { products: [] },
+  initialState: { items: [], totalQuantity: 0 },
   reducers: {
-    addToCart: (state, { payload }) => {
-      const productIndex = state.products.findIndex(
-        (product) => product.title === payload.title,
-      );
+    addToCart: (state, action) => {
+      const newItem = action.payload;
+      const existingItem = state.items.find((item) => item.id === newItem.id);
 
-      if (productIndex !== -1) {
-        state.products[productIndex].quantity =
-          state.products[productIndex].quantity + 1;
-        state.products[productIndex].total =
-          state.products[productIndex].total +
-          state.products[productIndex].price;
+      state.totalQuantity++;
+
+      if (!existingItem) {
+        state.items.push({
+          id: newItem.id,
+          price: newItem.price,
+          quantity: 1,
+          totalPrice: newItem.price,
+          name: newItem.title,
+        });
       } else {
-        state.products.push({ ...payload, quantity: 1, total: payload.price });
+        existingItem.quantity++;
+        existingItem.totalPrice = existingItem.totalPrice + existingItem.price;
       }
     },
-    removeFromCart: (state, { payload }) => {
-      const productIndex = state.products.findIndex(
-        (product) => product.title === payload.title,
-      );
+    removeFromCart: (state, action) => {
+      const id = action.payload;
+      const existingItem = state.items.find((item) => item.id === id);
 
-      if (productIndex === -1) {
-        // This should never happens, but we never know...
-        return;
+      state.totalQuantity--;
+
+      if (!existingItem) {
+        console.log('ERROR');
       }
-      if (state.products[productIndex].quantity === 1) {
-        state.products.splice(productIndex, 1);
+
+      if (existingItem.quantity === 1) {
+        state.items = state.items.filter((item) => item.id !== id);
       } else {
-        state.products[productIndex].quantity =
-          state.products[productIndex].quantity - 1;
-        state.products[productIndex].total =
-          state.products[productIndex].total -
-          state.products[productIndex].price;
+        existingItem.quantity--;
+        existingItem.totalPrice = existingItem.totalPrice - existingItem.price;
       }
     },
   },

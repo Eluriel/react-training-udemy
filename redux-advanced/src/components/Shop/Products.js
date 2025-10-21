@@ -1,31 +1,41 @@
 import ProductItem from './ProductItem';
 import classes from './Products.module.css';
 
+const DUMMY_PRODUCTS = [
+  {
+    id: 'p1',
+    title: 'Wireless Earbuds',
+    price: 12,
+    description: 'Compact Bluetooth earbuds with clear sound.',
+  },
+  {
+    id: 'p2',
+    title: 'Smartwatch',
+    price: 35,
+    description: 'Track fitness, sleep, and notifications easily.',
+  },
+  {
+    id: 'p3',
+    title: 'Speaker',
+    price: 20,
+    description: 'Powerful sound in a pocket-sized design.',
+  },
+];
+
 const Products = (props) => {
   return (
     <section className={classes.products}>
       <h2>Buy your favorite products</h2>
       <ul>
-        <ProductItem
-          title="Wireless Earbuds"
-          price={49.99}
-          description="Compact Bluetooth earbuds with clear sound."
-        />
-        <ProductItem
-          title="Smartwatch"
-          price={129.0}
-          description="Track fitness, sleep, and notifications easily."
-        />
-        <ProductItem
-          title="Portable Speaker"
-          price={39.5}
-          description="Powerful sound in a pocket-sized design."
-        />
-        <ProductItem
-          title="Gaming Mouse"
-          price={59.0}
-          description="High precision and RGB lighting for gamers."
-        />
+        {DUMMY_PRODUCTS.map((product) => (
+          <ProductItem
+            key={product.id}
+            id={product.id}
+            title={product.title}
+            price={product.price}
+            description={product.description}
+          />
+        ))}
       </ul>
     </section>
   );

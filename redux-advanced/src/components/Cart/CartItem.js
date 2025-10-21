@@ -3,16 +3,16 @@ import classes from './CartItem.module.css';
 import { cartActions } from '../../store/cart';
 
 const CartItem = (props) => {
-  const { title, quantity, total, price } = props.item;
+  const { id, title, quantity, total, price } = props.item;
 
   const dispatch = useDispatch();
 
   function handleReduceQuantity() {
-    dispatch(cartActions.removeFromCart({ title }));
+    dispatch(cartActions.removeFromCart(id));
   }
 
   function handleIncreaseQuantity() {
-    dispatch(cartActions.addToCart({ title }));
+    dispatch(cartActions.addToCart({ id }));
   }
 
   return (
