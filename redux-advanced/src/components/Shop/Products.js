@@ -7,9 +7,24 @@ const Products = (props) => {
       <h2>Buy your favorite products</h2>
       <ul>
         <ProductItem
-          title="Test"
-          price={6}
-          description="This is a first product - amazing!"
+          title="Wireless Earbuds"
+          price={49.99}
+          description="Compact Bluetooth earbuds with clear sound."
+        />
+        <ProductItem
+          title="Smartwatch"
+          price={129.0}
+          description="Track fitness, sleep, and notifications easily."
+        />
+        <ProductItem
+          title="Portable Speaker"
+          price={39.5}
+          description="Powerful sound in a pocket-sized design."
+        />
+        <ProductItem
+          title="Gaming Mouse"
+          price={59.0}
+          description="High precision and RGB lighting for gamers."
         />
       </ul>
     </section>
