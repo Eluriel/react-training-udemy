@@ -14,6 +14,7 @@ export default function EditEvent() {
   const { data, isPending, isError, error } = useQuery({
     queryKey: ['events', { id: params.id }],
     queryFn: ({ signal }) => fetchEvent({ signal, id: params.id }),
+    staleTime: 10000,
   });
 
   const { mutate } = useMutation({
@@ -98,3 +99,18 @@ export default function EditEvent() {
 
   return <Modal onClose={handleClose}>{content}</Modal>;
 }
+
+// export function loader({ params }) {
+//   return queryClient.fetchQuery({
+//     queryKey: ['events', { id: params.id }],
+//     queryFn: ({ signal }) => fetchEvent({ signal, id: params.id }),
+//   });
+// }
+
+// export async function action({ request, params }) {
+//   const formData = await request.formData();
+//   const updatedEventData = Object.fromEntries(formData);
+//   await updateEvent({ id: params.id, event: updatedEventData });
+//   await queryClient.invalidateQueries(['events']);
+//   return redirect('../');
+// }
