@@ -1,9 +1,17 @@
 import sql from "better-sqlite3";
-import fs from "node:fs";
+import * as Minio from "minio";
 import slugify from "slugify";
 import xss from "xss";
 
 const db = sql("meals.db");
+
+const minioClient = new Minio.Client({
+  endPoint: "localhost",
+  port: 9900,
+  useSSL: false,
+  accessKey: "minioAccessKey",
+  secretKey: "minioSecretKey",
+});
 
 export async function getMeals() {
   await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -22,14 +30,17 @@ export async function saveMeal(meal) {
   const extension = meal.image.name.split(".").pop();
   const fileName = `${meal.slug}.${extension}`;
 
-  const stream = fs.createWriteStream(`public/images/${fileName}`);
   const bufferedImage = await meal.image.arrayBuffer();
 
-  stream.write(Buffer.from(bufferedImage), (error) => {
-    if (error) throw new Error("Saving image failed!");
-  });
+  minioClient.putObject(
+    "foodies-nextjs",
+    fileName,
+    Buffer.from(bufferedImage),
+    meal.image.size,
+    { "Content-Type": meal.image.type }
+  );
 
-  meal.image = `/images/${fileName}`;
+  meal.image = fileName;
 
   db.prepare(
     `
