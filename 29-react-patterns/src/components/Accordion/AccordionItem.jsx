@@ -1,5 +1,21 @@
-import { useAccordionContext } from './Accordion';
+import { useContext } from 'react';
+import { createContext } from 'react';
 
-export default function AccordionItem({ children, className }) {
-  return <li className={className}>{children}</li>;
+const AccordionItemContext = createContext();
+
+export function useAccordionItemContext() {
+  const ctx = useContext(AccordionItemContext);
+
+  if (!ctx) {
+    throw new Error('Wrong component structure');
+  }
+  return ctx;
+}
+
+export default function AccordionItem({ id, children, className }) {
+  return (
+    <AccordionItemContext.Provider value={id}>
+      <li className={className}>{children}</li>
+    </AccordionItemContext.Provider>
+  );
 }
